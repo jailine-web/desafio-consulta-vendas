@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.devsuperior.dsmeta.dto.SaleMinDTO;
+import com.devsuperior.dsmeta.dto.SellerMinDTO;
 import com.devsuperior.dsmeta.services.SaleService;
 
 @RestController
@@ -34,21 +34,21 @@ public class SaleController {
 		@RequestParam(value = "minDate"  , defaultValue = "") String dateMin, 
 		@RequestParam(value = "maxDate"  , defaultValue = "") String dateMax, 
 		@RequestParam(value = "name"     , defaultValue = "") String name, 
-		@RequestParam(value = "page"     , defaultValue = "0") Integer page, 
-		@RequestParam(value = "size"     , defaultValue = "10") Integer size
-		) {
+		Pageable pageable) {
 	
-		PageRequest pageRequest = PageRequest.of(page, size);
-		
-	Page<SaleMinDTO> sales = service.findReport(dateMin, dateMax, name, pageRequest);
+	Page<SaleMinDTO> sales = service.findReport(dateMin, dateMax, name, pageable);
 	
 	return ResponseEntity.ok().body(sales);
 	
 	}
 
 	@GetMapping(value = "/summary")
-	public ResponseEntity<?> getSummary() {
-		// TODO
-		return null;
+	public ResponseEntity<List<SellerMinDTO>> getSummary(
+		@RequestParam(value = "dataInicial", defaultValue = "") String dataInicial,
+		@RequestParam(value = "dataFinal", defaultValue = "") String dataFinal) {
+	
+	List<SellerMinDTO> result = service.findSumary(dataInicial, dataFinal);
+	
+	return ResponseEntity.ok().body(result);
 	}
 }

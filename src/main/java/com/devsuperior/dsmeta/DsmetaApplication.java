@@ -12,7 +12,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import com.devsuperior.dsmeta.dto.SaleMinDTO;
-import com.devsuperior.dsmeta.projections.SaleProjection;
+import com.devsuperior.dsmeta.dto.SellerMinDTO;
+import com.devsuperior.dsmeta.projections.SellerProjection;
 import com.devsuperior.dsmeta.repositories.SaleRepository;
 
 @SpringBootApplication
@@ -30,25 +31,20 @@ public class DsmetaApplication implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {
 
-//		<<< Consulta SQl >>>
-//		
-//		List<SaleProjection> list = repository.searchReport(LocalDate.parse("2022-05-01"),
-//				LocalDate.parse("2022-05-31"), "Odinson");
-//		List<SaleMinDTO> result = list.stream().map(x -> new SaleMinDTO(x)).collect(Collectors.toList());
-//
-//		for (SaleMinDTO dto : result) {
-//			System.out.println(dto);
-//		}
+		
+		List<SellerProjection> list = repository.searchSales(LocalDate.parse("2022-01-01"),
+				LocalDate.parse("2022-06-30"));
+		List<SellerMinDTO> result = list.stream().map(x -> new SellerMinDTO(x))
+				.collect(Collectors.toList());
 
-		Page<SaleMinDTO> page = repository.searchReportJpql(LocalDate.parse("2022-05-01"),
-				LocalDate.parse("2022-05-30"), "odinson", pageable);
+		System.out.println("\nInício da consulta SQL");
 
-		System.out.println("Início da consulta JPQL");
-
-		for (SaleMinDTO s : page) {
-			System.out.println(s);
+		for (SellerMinDTO dto : result) {
+			System.out.println(dto);
 		}
-		System.out.println("Fim da consulta JPQL");
+
+		System.out.println("\nFim da consulta SQL");
+
 	}
 
 }

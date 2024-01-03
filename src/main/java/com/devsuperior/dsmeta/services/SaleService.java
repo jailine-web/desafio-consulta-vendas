@@ -14,8 +14,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.devsuperior.dsmeta.dto.SaleMinDTO;
+import com.devsuperior.dsmeta.dto.SellerMinDTO;
 import com.devsuperior.dsmeta.entities.Sale;
-import com.devsuperior.dsmeta.projections.SaleProjection;
+import com.devsuperior.dsmeta.projections.SellerProjection;
 import com.devsuperior.dsmeta.repositories.SaleRepository;
 
 @Service
@@ -59,5 +60,30 @@ public class SaleService {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
 		LocalDate formattedDate = LocalDate.parse(date, formatter);
 		return formattedDate;
+	}
+	
+	
+	public List<SellerMinDTO> findSumary(String dataInicial, String dataFinal){
+
+		LocalDate maxDate, minDate;
+
+		if (dataFinal.equals("")) {
+			maxDate = LocalDate.ofInstant(Instant.now(), ZoneId.systemDefault());
+		}  
+		else {
+			maxDate = transformDate(dataFinal);
+		}
+		if(dataInicial.equals("")) {
+			minDate = maxDate.minusYears(1);
+		} 
+		else {
+			minDate = transformDate(dataInicial);
+		}
+
+		List<SellerProjection> list = repository.searchSales(minDate, maxDate);
+		List<SellerMinDTO> result = list.stream().map(x -> new SellerMinDTO(x))
+				.collect(Collectors.toList());
+		
+		return result;
 	}
 }
