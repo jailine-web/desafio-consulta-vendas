@@ -37,7 +37,7 @@ public class DsmetaApplication implements CommandLineRunner {
 			System.out.println(s);
 		}
 		
-		System.out.println("\nFim da consulta da 1° JPQL");
+		System.out.println("\nFim da consulta da 1° JPQL\n");
 		
 		Page<SellerMinDTO> list = repository.searchSalesJpql(LocalDate.parse("2022-01-01"), 
 				LocalDate.parse("2022-06-30"), pageable);
