@@ -63,7 +63,7 @@ public class SaleService {
 	}
 	
 	
-	public List<SellerMinDTO> findSumary(String dataInicial, String dataFinal){
+	public Page<SellerMinDTO> findSumary(String dataInicial, String dataFinal, Pageable pageable){
 
 		LocalDate maxDate, minDate;
 
@@ -80,7 +80,7 @@ public class SaleService {
 			minDate = transformDate(dataInicial);
 		}
 
-		List<SellerMinDTO> list = repository.searchSalesJpql(minDate, maxDate);
+		Page<SellerMinDTO> list = repository.searchSalesJpql(minDate, maxDate, pageable);
 		
 		return list;
 	}
