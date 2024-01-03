@@ -9,6 +9,8 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.devsuperior.dsmeta.dto.SaleMinDTO;
@@ -28,7 +30,8 @@ public class SaleService {
 		return new SaleMinDTO(entity);
 	}
 	
-	public List<SaleMinDTO> findReport(String minDate, String maxDate, String name) {
+	public Page<SaleMinDTO> findReport(String minDate, String maxDate, 
+			String name, Pageable pageable) {
 
 		LocalDate dateMax, dateMin;
 
@@ -45,10 +48,10 @@ public class SaleService {
 			dateMin = transformDate(minDate);
 		}
 		
-		List<SaleProjection> report = repository.searchReport(dateMin, dateMax, name);
-		List<SaleMinDTO> list = report.stream().map(x -> new SaleMinDTO(x)).collect(Collectors.toList());
+		Page<SaleMinDTO> report = repository.searchReportJpql(dateMin, dateMax, name, pageable);
+		 
+		return report;
 
-		return list;
 	}
 
 	private LocalDate transformDate(String date) {

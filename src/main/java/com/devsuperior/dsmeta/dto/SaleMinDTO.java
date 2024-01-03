@@ -16,6 +16,7 @@ public class SaleMinDTO {
 		this.id = id;
 		this.amount = amount;
 		this.date = date;
+		this.name = name;
 	}
 	
 	public SaleMinDTO(Sale entity) {
@@ -30,6 +31,7 @@ public class SaleMinDTO {
 		date   = projection.getDate();
 		name   = projection.getName();
 	}
+	
 	public Long getId() {
 		return id;
 	}
