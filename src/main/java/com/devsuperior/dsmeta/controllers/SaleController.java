@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,9 +34,13 @@ public class SaleController {
 		@RequestParam(value = "minDate"  , defaultValue = "") String dateMin, 
 		@RequestParam(value = "maxDate"  , defaultValue = "") String dateMax, 
 		@RequestParam(value = "name"     , defaultValue = "") String name, 
-		Pageable pageable) {
+		@RequestParam(value = "page"     , defaultValue = "0") Integer page, 
+		@RequestParam(value = "size"     , defaultValue = "10") Integer size
+		) {
 	
-	Page<SaleMinDTO> sales = service.findReport(dateMin, dateMax, name, pageable);
+		PageRequest pageRequest = PageRequest.of(page, size);
+		
+	Page<SaleMinDTO> sales = service.findReport(dateMin, dateMax, name, pageRequest);
 	
 	return ResponseEntity.ok().body(sales);
 	
