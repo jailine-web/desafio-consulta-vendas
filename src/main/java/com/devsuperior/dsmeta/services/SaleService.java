@@ -80,10 +80,8 @@ public class SaleService {
 			minDate = transformDate(dataInicial);
 		}
 
-		List<SellerProjection> list = repository.searchSales(minDate, maxDate);
-		List<SellerMinDTO> result = list.stream().map(x -> new SellerMinDTO(x))
-				.collect(Collectors.toList());
+		List<SellerMinDTO> list = repository.searchSalesJpql(minDate, maxDate);
 		
-		return result;
+		return list;
 	}
 }
